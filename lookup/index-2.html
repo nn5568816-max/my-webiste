@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naresh Number API</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:linear-gradient(rgba(0,10,15,.94),rgba(0,5,10,.98)),repeating-linear-gradient(90deg,transparent 0,transparent 35px,rgba(0,255,140,.025) 36px);color:#b8ffd4;font-family:"Share Tech Mono",monospace;overflow-x:hidden}
+body:before{content:"01010101 00101101 11001010 01010111 10101010 01101001 01010010";position:fixed;inset:0;z-index:-1;color:rgba(0,255,150,.05);font-size:22px;line-height:2.3;word-spacing:20px;transform:rotate(-2deg) scale(1.3);overflow:hidden}
+.container{width:min(900px,92%);margin:auto;padding:45px 0 35px}
+.header{text-align:center;margin-bottom:40px}.status{color:#72ff9d;font-size:18px;margin-bottom:18px;text-shadow:0 0 15px #40ff85}.title{color:#79ff9e;font-size:clamp(32px,7vw,58px);letter-spacing:5px;text-shadow:0 0 8px #42ff82,0 0 25px rgba(55,255,120,.5)}.subtitle{margin-top:20px;color:#638b72;font-size:14px;letter-spacing:6px}.developer{display:inline-block;margin-top:25px;padding:12px 22px;border:1px solid #27333a;border-radius:30px;background:rgba(15,22,27,.85);color:#8df5ae}
+.card{background:rgba(13,19,24,.96);border:1px solid #26333b;border-radius:22px;padding:30px;margin-bottom:25px;box-shadow:0 0 30px rgba(0,0,0,.4),inset 0 0 25px rgba(0,255,130,.015)}.card-title{color:#7cff9e;font-size:24px;margin-bottom:22px}.endpoint{display:flex;align-items:center;gap:20px;background:#020609;border-left:5px solid #6dffa0;border-radius:15px;padding:18px 20px;margin:14px 0}.method{background:#72f49a;color:#06150b;padding:5px 13px;border-radius:7px;font-weight:bold;white-space:nowrap}.path{color:#d1ffe0;font-size:17px;word-break:break-all}
+.input{width:100%;padding:18px;background:#020609;border:1px solid #28343d;border-radius:14px;color:#baffcf;outline:none;font-family:inherit;font-size:18px;margin-bottom:14px}.input:focus{border-color:#69ff9b;box-shadow:0 0 15px rgba(70,255,130,.15)}.test-btn{width:100%;border:0;border-radius:15px;padding:19px;background:#7af5a0;color:#06150b;font-family:inherit;font-size:18px;font-weight:bold;letter-spacing:2px;cursor:pointer}.test-btn:disabled{opacity:.6;cursor:not-allowed}.result{margin-top:22px;padding:22px;min-height:100px;background:#000;border:1px solid #182229;border-radius:15px;color:#bfffd0;white-space:pre-wrap;overflow:auto;line-height:1.6}.api-status{margin-top:12px;color:#638b72;font-size:13px;word-break:break-all}
+.socials{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:35px}.social-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:18px;border:1px solid #29353d;border-radius:15px;background:rgba(15,22,27,.9);color:#8af4aa;text-decoration:none;font-size:17px}.social-btn:hover{border-color:#70ff9e;transform:translateY(-2px)}
+footer{margin-top:40px;padding-top:22px;border-top:1px solid #182229;text-align:center;color:#53665b;line-height:2}
+.password-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,5,9,.98);backdrop-filter:blur(8px)}.password-overlay.hidden{display:none}.password-panel{width:min(420px,100%);padding:32px 25px;text-align:center;background:rgba(13,19,24,.98);border:1px solid #26333b;border-radius:22px;box-shadow:0 0 35px rgba(0,255,130,.12)}.password-lock{font-size:46px;margin-bottom:15px}.password-title{color:#79ff9e;font-size:27px;margin-bottom:10px}.password-text{color:#638b72;font-size:14px;line-height:1.6;margin-bottom:22px}.password-input{width:100%;padding:17px;background:#020609;border:1px solid #28343d;border-radius:14px;color:#baffcf;outline:none;font-family:inherit;font-size:17px;text-align:center;margin-bottom:14px}.password-btn{width:100%;border:0;border-radius:14px;padding:17px;background:#7af5a0;color:#06150b;font-family:inherit;font-size:17px;font-weight:bold;cursor:pointer}.password-error{min-height:22px;margin-top:12px;color:#ff7070;font-size:14px}
+@media(max-width:600px){.container{width:90%;padding-top:30px}.title{font-size:32px;letter-spacing:3px}.subtitle{font-size:11px;letter-spacing:3px}.card{padding:22px;border-radius:18px}.endpoint{display:block;padding:18px}.method{display:inline-block;margin-bottom:12px}.path{font-size:15px}.socials{grid-template-columns:1fr 1fr;gap:10px}.social-btn{font-size:14px;padding:16px 5px}}
+</style>
+</head>
+<body>
+<div id="passwordOverlay" class="password-overlay">
+<div class="password-panel">
+<div class="password-lock">🔐</div>
+<h2 class="password-title">SECURE ACCESS</h2>
+<p class="password-text">Enter password to access<br><strong>Naresh NUMBER API</strong></p>
+<input id="passwordInput" class="password-input" type="password" placeholder="Enter password" autocomplete="off">
+<button id="unlockBtn" class="password-btn">🔓 UNLOCK</button>
+<div id="passwordError" class="password-error"></div>
+</div>
+</div>
+<div class="container">
+<header class="header">
+<div class="status">◉ ONLINE</div>
+<h1 class="title">Naresh NUMBER<br>API</h1>
+<div class="subtitle">NUMBER INFO PLATFORM</div>
+<div class="developer">👑 Developed by Naresh</div>
+</header>
+<section class="card">
+<h2 class="card-title">📡 Endpoints</h2>
+<div class="endpoint"><span class="method">GET</span><span class="path">/api/number/ADITYA-LIFE-KEY-XIPQ0B59?number=9876543210</span></div>
+<div class="endpoint"><span class="method">GET</span><span class="path">/api/health</span></div>
+<div class="endpoint"><span class="method">GET</span><span class="path">/api/info</span></div>
+</section>
+<section class="card">
+<h2 class="card-title">🧪 Live Test</h2>
+<input id="numberInput" class="input" type="tel" inputmode="numeric" maxlength="10" placeholder="Enter 10-digit number">
+<button id="testBtn" class="test-btn">TEST API</button>
+<div id="result" class="result">// Enter 10-digit number</div>
+<div class="api-status">API: https://geniushacker.vercel.app</div>
+</section>
+<div class="socials">
+<a class="social-btn" href="https://www.instagram.com/cyber_india9?stkn=MW80azhjbzltcnM=" target="_blank" rel="noopener noreferrer">📸 Instagram</a>
+<a class="social-btn" href="https://t.me/+Xrok4xEFCHc5N2M1" target="_blank" rel="noopener noreferrer">✈️ Telegram</a>
+</div>
+<footer><div>© 2026 NARESH NUMBER API</div><div>👑 Developed by Naresh</div><div>📸 Instagram &nbsp; | &nbsp; ✈️ Telegram</div></footer>
+</div>
+<script>
+const SITE_PASSWORD="Naresh1951NH";
+const API_BASE_URL="https://geniushacker.vercel.app";
+const API_PATH="/api/number/ADITYA-LIFE-KEY-XIPQ0B59";
+const overlay=document.getElementById("passwordOverlay"),passwordInput=document.getElementById("passwordInput"),passwordError=document.getElementById("passwordError"),unlockBtn=document.getElementById("unlockBtn");
+function unlockSite(){if(passwordInput.value===SITE_PASSWORD){passwordError.textContent="";overlay.classList.add("hidden");sessionStorage.setItem("naresh_api_access","granted")}else{passwordError.textContent="❌ Incorrect password";passwordInput.value="";passwordInput.focus()}}
+unlockBtn.addEventListener("click",unlockSite);
+passwordInput.addEventListener("keydown",e=>{if(e.key==="Enter")unlockSite()});
+if(sessionStorage.getItem("naresh_api_access")==="granted")overlay.classList.add("hidden");
+const numberInput=document.getElementById("numberInput"),testBtn=document.getElementById("testBtn"),result=document.getElementById("result");
+testBtn.addEventListener("click",testAPI);
+numberInput.addEventListener("keydown",e=>{if(e.key==="Enter")testAPI()});
+async function testAPI(){
+const number=numberInput.value.trim();
+if(!/^\d{10}$/.test(number)){result.textContent="// ERROR\n\nEnter a valid 10-digit number.";return}
+testBtn.disabled=true;testBtn.textContent="CONNECTING...";result.textContent="// Connecting to API...\n\n"+API_BASE_URL;
+try{
+const apiURL=API_BASE_URL+API_PATH+"?number="+encodeURIComponent(number);
+const response=await fetch(apiURL,{method:"GET",headers:{"Accept":"application/json"},cache:"no-store"});
+const rawText=await response.text();
+if(!response.ok){result.textContent="// API ERROR\n\nHTTP Status: "+response.status+"\n\n"+rawText;return}
+try{result.textContent=JSON.stringify(JSON.parse(rawText),null,4)}catch{result.textContent=rawText||"// API returned an empty response."}
+}catch(error){
+result.textContent="// CONNECTION ERROR\n\n"+error.message+"\n\nPossible causes:\n1. API server is offline\n2. CORS is not enabled\n3. API URL is incorrect\n4. API route does not exist";
+}finally{testBtn.disabled=false;testBtn.textContent="TEST API"}
+}
+</script>
+</body>
+</html>
