@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="700" viewBox="0 0 500 700">
+  <rect width="500" height="700" fill="#111"/>
+  <circle cx="250" cy="250" r="105" fill="#7f00ff"/>
+  <circle cx="250" cy="220" r="55" fill="#fff"/>
+  <path d="M130 500c25-110 215-110 240 0v70H130z" fill="#fff"/>
+  <text x="250" y="640" text-anchor="middle" fill="#36d1dc" font-family="Arial" font-size="28">NARESH EXPLOITS</text>
+</svg>
