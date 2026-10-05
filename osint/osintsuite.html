@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OSINT SUITE - LIVE CONSOLE & TELEGRAM ALERT</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Montserrat,sans-serif;background:#f3f5f7;color:#333}
+.top{background:#080b29;border-top:5px solid #00e676;border-bottom:3px solid #00e676;padding:14px 22px}
+.brand{color:#00e676;font-size:12px;font-weight:800;letter-spacing:2px}
+.divider{color:#fff;margin:0 9px}
+.help{display:inline-block;margin-top:11px;padding:8px 15px;border-radius:25px;background:#201a32;border:1px solid #3d3450;color:#fff;font-size:11px;font-weight:700}
+.help i{color:#00e676;margin-right:7px}
+
+.main{max-width:680px;margin:45px auto 70px;padding:0 14px}
+.hero{background:linear-gradient(145deg,#11103d,#20205c);border-radius:25px 25px 0 0;border-bottom:4px solid #00e676;padding:28px 18px;text-align:center;color:#fff}
+.secure{display:inline-block;padding:9px 22px;border-radius:25px;border:1px solid #00e67655;background:#00e67612;color:#00e676;font-size:11px;font-weight:800;letter-spacing:2px}
+.logo{width:78px;height:78px;margin:16px auto 10px;border-radius:50%;background:#fff;border:5px solid #26324b;display:flex;align-items:center;justify-content:center}
+.logo i{color:#00c853;font-size:34px}
+.hero h1{font-size:29px;letter-spacing:2px}.hero h1 span{color:#00e676}
+.subtitle{margin-top:12px;color:#aaa;font-size:13px;line-height:1.6;letter-spacing:1.4px}.subtitle i{color:#00e676;margin-right:7px}
+
+.panel{background:#fff;border-radius:0 0 25px 25px;padding:28px;box-shadow:0 15px 40px #0002}
+.services{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px;background:#f1f2f5;border:1px solid #dddfe3;border-radius:19px}
+.service{min-height:67px;border:0;border-radius:12px;background:transparent;color:#777;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;font-family:inherit;font-size:11px;font-weight:600;cursor:pointer}
+.service i{font-size:20px}.service.active{background:#080b29;color:#00e676;box-shadow:0 5px 14px #0002}
+
+.form-title{margin:27px 0 14px;font-size:14px;font-weight:800;letter-spacing:1.4px}
+.form-title i{color:#00b84a;margin-right:10px}
+.input-box{display:flex;border:2px solid #dedfe2;border-radius:17px;overflow:hidden;background:#fafbfc}
+.prefix{padding:18px 14px;border-right:1px solid #ddd;font-weight:600}
+.input-box input{width:100%;border:0;outline:0;background:transparent;padding:18px 15px;font-family:inherit;font-size:16px}
+.status{margin:27px 4px 18px;color:#999;font-size:13px}.status i{color:#00e676;margin-right:7px}
+.search{width:100%;padding:19px;border:0;border-radius:18px;background:linear-gradient(135deg,#00d96b,#00a844);color:#fff;font-size:20px;font-weight:800;letter-spacing:2px;cursor:pointer}
+.search:disabled{opacity:.65;cursor:wait}
+
+/* Console Styling */
+.console-wrapper{margin-top:25px;background:#070a1e;border-radius:18px;padding:18px;border:1px solid #00e676}
+.console-header{display:flex;justify-content:space-between;align-items:center;color:#00e676;font-weight:800;font-size:12px;letter-spacing:1px;margin-bottom:12px}
+.console-clear-btn{background:#1a203a;color:#fff;border:1px solid #3d3450;padding:4px 10px;border-radius:8px;cursor:pointer;font-size:10px;font-weight:700}
+.console-body{height:160px;overflow-y:auto;font-family:monospace;font-size:12px;color:#8f9bb3;background:#030511;padding:12px;border-radius:12px;border:1px solid #1a233a}
+.console-log{margin-bottom:6px;line-height:1.4}
+.console-time{color:#00e676}
+.console-service{color:#ffcb6b;font-weight:bold}
+.console-query{color:#4fc3f7;font-weight:bold}
+
+.security{margin-top:24px;border:1px solid #dddfe3;background:#f8fafb;border-radius:17px;padding:16px 8px;display:flex;justify-content:space-around;gap:8px;flex-wrap:wrap}
+.security-item{display:flex;align-items:center;gap:6px;font-size:11px;color:#666}.security-item i{color:#15953c;font-size:17px}
+.json{width:100%;margin-top:19px;padding:16px;border:1px solid #ddd;border-radius:15px;background:#fff;color:#777;font-family:inherit;font-weight:600;cursor:pointer}
+.result{display:none;margin-top:18px;padding:16px;background:#f0fff5;border:1px solid #8ce5aa;border-radius:15px;color:#16763a}
+.result pre{white-space:pre-wrap;word-break:break-word;font-size:12px}
+footer{background:#080b29;border-top:4px solid #00e676;color:#73758d;padding:24px 12px;text-align:center;font-size:11px}
+</style>
+</head>
+
+<body>
+
+<header class="top">
+  <div>
+    <span class="brand"><i class="fa-solid fa-shield-halved"></i> NARESH OSINT</span>
+    <span class="divider">|</span>
+    <span class="brand">CYBER SECURITY DIVISION</span>
+  </div>
+  <div class="help"><i class="fa-solid fa-phone"></i> Helpline: +44 7783 525050</div>
+</header>
+
+<main class="main">
+
+<section class="hero">
+  <div class="secure"><i class="fa-solid fa-lock"></i> SECURE • ENCRYPTED</div>
+  <div class="logo"><i class="fa-solid fa-user-secret"></i></div>
+  <h1><span>OSINT</span> SUITE</h1>
+  <div class="subtitle"><i class="fa-solid fa-shield"></i>5 Services • Phone • Aadhaar • IFSC • Vehicle</div>
+</section>
+
+<section class="panel">
+
+<div class="services">
+  <button class="service active" onclick="selectService('Phone',this)"><i class="fa-solid fa-phone"></i><span>Phone</span></button>
+  <button class="service" onclick="selectService('Aadhaar',this)"><i class="fa-solid fa-address-card"></i><span>Aadhaar</span></button>
+  <button class="service" onclick="selectService('IFSC',this)"><i class="fa-solid fa-building-columns"></i><span>IFSC</span></button>
+  <button class="service" onclick="selectService('Vehicle RC',this)"><i class="fa-solid fa-car"></i><span>Vehicle RC</span></button>
+  <button class="service" onclick="selectService('V-Number',this)"><i class="fa-solid fa-magnifying-glass"></i><span>V-Number</span></button>
+</div>
+
+<div class="form-title">
+  <i id="titleIcon" class="fa-solid fa-phone"></i>
+  <span id="formTitle">ENTER 10-DIGIT MOBILE NUMBER</span>
+</div>
+
+<div class="input-box">
+  <div class="prefix" id="prefix">+91</div>
+  <input id="searchInput" type="text" maxlength="10" placeholder="Enter 10-digit phone number" autocomplete="off">
+</div>
+
+<div class="status"><i class="fa-solid fa-circle"></i><span id="statusText">Ready to search</span></div>
+
+<button class="search" id="searchButton" onclick="searchData()">
+  <i class="fa-solid fa-magnifying-glass"></i> SEARCH
+</button>
+
+<!-- LIVE ACTIVITY CONSOLE -->
+<div class="console-wrapper">
+  <div class="console-header">
+    <span><i class="fa-solid fa-terminal"></i> LIVE LOG CONSOLE</span>
+    <button class="console-clear-btn" onclick="clearConsole()">Clear Log</button>
+  </div>
+  <div class="console-body" id="liveConsole">
+    <div class="console-log">[System] Live console ready. Listening for user search actions...</div>
+  </div>
+</div>
+
+<button class="json" onclick="showJSON()">
+  <i class="fa-solid fa-code"></i> &nbsp; View Raw Data (JSON)
+</button>
+
+<div class="result" id="result"><pre id="resultText"></pre></div>
+
+</section>
+</main>
+
+<footer>
+  <div>NARESH OSINT SUITE &copy; 2026</div>
+</footer>
+
+<script>
+/*
+========================================================
+TELEGRAM BOT CONFIGURATION
+========================================================
+Mee Telegram Bot Token and Chat ID ni kinda fill cheyandi:
+*/
+const TELEGRAM_BOT_TOKEN = "8960475829:AAEySyDTs3OQb7FFwXS2BI8u53IxViXAMJ4";
+const TELEGRAM_CHAT_ID = "1136974186";
+
+/*
+========================================================
+API URL CONFIGURATION
+========================================================
+*/
+const API_URLS = {
+
+  Phone: "https://number-info-api-mauve.vercel.app/api/number/ADITYA-LIFE-KAYS-1DXS1E01?number=9876543210",
+  Aadhaar: "https://geniushacker-addharapi.vercel.app/api/aadhaar?aadhaar=123412341234",
+  IFSC: "https://vercei-kappa.vercel.app/ifsc?code=SBIN0001234",
+  "Vehicle RC": "https://api.naxupdate.workers.dev/api/vahan?vechile=MH14ML9572&key=1Dayy",
+  "V-Number": "https://api.naxupdate.workers.dev/api/vahan?vechile=MH14ML9572&key=1Dayy"
+};
+
+let currentService = "Phone";
+
+const config = {
+ Phone:{title:"ENTER 10-DIGIT MOBILE NUMBER",placeholder:"Enter 10-digit phone number",max:10,prefix:"+91",icon:"fa-phone"},
+ Aadhaar:{title:"ENTER AADHAAR NUMBER",placeholder:"Enter Aadhaar number",max:12,prefix:"IN",icon:"fa-address-card"},
+ IFSC:{title:"ENTER IFSC CODE",placeholder:"Example: SBIN0001234",max:11,prefix:"IFSC",icon:"fa-building-columns"},
+ "Vehicle RC":{title:"ENTER VEHICLE RC NUMBER",placeholder:"Example: AP01AB1234",max:15,prefix:"RC",icon:"fa-car"},
+ "V-Number":{title:"ENTER VEHICLE NUMBER",placeholder:"Example: AP01AB1234",max:15,prefix:"V",icon:"fa-magnifying-glass"}
+};
+
+function selectService(service, el){
+ currentService = service;
+ document.querySelectorAll(".service").forEach(x => x.classList.remove("active"));
+ el.classList.add("active");
+
+ const c = config[service];
+ document.getElementById("formTitle").textContent = c.title;
+ document.getElementById("searchInput").placeholder = c.placeholder;
+ document.getElementById("searchInput").maxLength = c.max;
+ document.getElementById("prefix").textContent = c.prefix;
+ document.getElementById("searchInput").value = "";
+ document.getElementById("titleIcon").className = "fa-solid " + c.icon;
+ document.getElementById("statusText").textContent =
+   API_URLS[service] ? "API connected — ready to search" : "API URL not configured";
+ document.getElementById("result").style.display = "none";
+ 
+ appendConsoleLog("Service switched to " + service, "INFO");
+}
+
+function getValue(){
+ return document.getElementById("searchInput").value.trim();
+}
+
+function appendConsoleLog(msg, type="SEARCH"){
+ const consoleBox = document.getElementById("liveConsole");
+ const time = new Date().toLocaleTimeString();
+ const logDiv = document.createElement("div");
+ logDiv.className = "console-log";
+ 
+ if(type === "SEARCH"){
+   logDiv.innerHTML = `<span class="console-time">[${time}]</span> <span class="console-service">[${currentService}]</span> Executed search for: <span class="console-query">${msg}</span>`;
+ } else if(type === "INFO"){
+   logDiv.innerHTML = `<span class="console-time">[${time}]</span> <span style="color:#e5c07b;">[SYS]</span> ${msg}`;
+ }
+ 
+ consoleBox.appendChild(logDiv);
+ consoleBox.scrollTop = consoleBox.scrollHeight;
+}
+
+function clearConsole(){
+ document.getElementById("liveConsole").innerHTML = '<div class="console-log">[System] Console log cleared.</div>';
+}
+
+// Directly send live search alerts to Telegram
+async function sendTelegramAlert(value){
+ if(!TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN === "YOUR_TELEGRAM_BOT_TOKEN") return;
+
+ const text = `🚨 *LIVE SEARCH ALERT*\n\n📌 *Service:* ${currentService}\n🔍 *Query:* \`${value}\` \n🕒 *Time:* ${new Date().toLocaleString()}`;
+ const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+
+ try {
+   await fetch(url, {
+     method: "POST",
+     headers: { "Content-Type": "application/json" },
+     body: JSON.stringify({
+       chat_id: TELEGRAM_CHAT_ID,
+       text: text,
+       parse_mode: "Markdown"
+     })
+   });
+ } catch(e) {
+   console.error("Telegram notification failed:", e);
+ }
+}
+
+async function searchData(){
+ const value = getValue();
+ const apiUrl = API_URLS[currentService];
+
+ if(!value){
+   alert("Please enter a value first.");
+   return;
+ }
+
+ // Log in local UI console
+ appendConsoleLog(value, "SEARCH");
+ 
+ // Send live alert to Telegram Bot
+ sendTelegramAlert(value);
+
+ if(!apiUrl){
+   showResult({
+     service: currentService,
+     query: value,
+     status: "API_URL_NOT_CONFIGURED",
+     message: "Please add the " + currentService + " API URL in API_URLS inside this file."
+   });
+   return;
+ }
+
+ const button = document.getElementById("searchButton");
+ button.disabled = true;
+ button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> SEARCHING...';
+
+ try{
+   const url = apiUrl + (apiUrl.includes("?") ? "&" : "?") + "query=" + encodeURIComponent(value);
+   const response = await fetch(url, { method: "GET", headers: { "Accept": "application/json" } });
+   const contentType = response.headers.get("content-type") || "";
+   let data = contentType.includes("application/json") ? await response.json() : await response.text();
+   showResult(data);
+ }catch(error){
+   showResult({ status: "API_ERROR", service: currentService, error: error.message });
+ }finally{
+   button.disabled = false;
+   button.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> SEARCH';
+ }
+}
+
+function showResult(data){
+ document.getElementById("result").style.display = "block";
+ document.getElementById("resultText").textContent = typeof data === "string" ? data : JSON.stringify(data, null, 2);
+}
+
+function showJSON(){
+ const value = getValue();
+ if(!value){
+   alert("Please enter a value first.");
+   return;
+ }
+ showResult({
+   service: currentService,
+   query: value,
+   api_url: API_URLS[currentService] || "NOT CONFIGURED"
+ });
+}
+</script>
+
+</body>
+</html>
+
