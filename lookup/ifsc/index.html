@@ -561,7 +561,7 @@ async function testAPI() {
     const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
 
     if (!ifscRegex.test(ifscCode)) {
-        result.textContent = "// Error: Enter valid 11-character IFSC code (e.g., SBIN0000847)";
+        result.textContent = "// Error: Enter valid -character IFSC code (e.g., SBIN0000847)";
         return;
     }
 
